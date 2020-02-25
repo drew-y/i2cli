@@ -1,0 +1,24 @@
+{
+  "name": "@vb/i2c-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "bin": {
+    "i2c": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Drew Youngwerth",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "typescript": "^3.8.2"
+  },
+  "dependencies": {
+    "@types/i2c-bus": "^5.1.0",
+    "cliffy": "^2.3.0",
+    "i2c-bus": "^5.1.0"
+  }
+}

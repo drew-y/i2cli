@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { CLI } from "cliffy";
 import i2c from "i2c-bus";
 

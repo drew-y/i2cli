@@ -34,11 +34,10 @@ const cli = new CLI()
         description: "Read a word.",
         parameters: [
             { label: "addr", type: "number", description: "Device address." },
-            { label: "cmd", type: "number", description: "Command code." }
         ],
         async action(p) {
             i2clOpen(i2cl);
-            return i2cl.readWord(p.addr, p.cmd)
+            return i2cl.i2cRead(p.addr, 1, Buffer.alloc(1))
                 .then(val => {
                     console.log(`Recieved: ${val}`);
                 })
@@ -52,12 +51,11 @@ const cli = new CLI()
         description: "Write a word.",
         parameters: [
             { label: "addr", type: "number", description: "Device address." },
-            { label: "cmd", type: "number", description: "Command code." },
-            { label: "word", type: "number", description: "Data to send (number between 0 and 65535)." }
+            { label: "val", type: "number", description: "Value to write (0-255)" },
         ],
         async action(p) {
             i2clOpen(i2cl);
-            return i2cl.writeWord(p.addr, p.cmd, p.word)
+            await i2cl.i2cWrite(p.addr, 1, Buffer.from([p.val]))
                 .catch(e => {
                     console.log(`Error writing.`);
                     console.log(e);

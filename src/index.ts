@@ -39,7 +39,7 @@ const cli = new CLI()
             i2clOpen(i2cl);
             return i2cl.i2cRead(p.addr, 1, Buffer.alloc(1))
                 .then(val => {
-                    console.log(`Recieved: ${val}`);
+                    console.log(`Recieved: ${val.buffer}`);
                 })
                 .catch(e => {
                     console.log(`Error reading.`);

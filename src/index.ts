@@ -31,16 +31,36 @@ const cli = new CLI()
         }
     })
     .addCommand("read", {
-        description: "Read a word.",
+        description: "Read a byte.",
         parameters: [
             { label: "addr", type: "number", description: "Device address." },
+            { label: "radix", type: "number", description: "Device address.", optional: true },
         ],
         async action(p) {
             i2clOpen(i2cl);
             return i2cl.i2cRead(p.addr, 1, Buffer.alloc(1))
                 .then(val => {
-                    console.log(`Recieved:`);
-                    console.log(val.buffer);
+                    console.log(`Received:`);
+                    console.log(val.buffer[0].toString(p.radix ?? 10));
+                })
+                .catch(e => {
+                    console.log(`Error reading.`);
+                    console.log(e);
+                })
+        }
+    })
+    .addCommand("read-buffer", {
+        description: "Read a buffer.",
+        parameters: [
+            { label: "addr", type: "number", description: "Device address." },
+            { label: "length", type: "number", description: "Device address." },
+        ],
+        async action(p) {
+            i2clOpen(i2cl);
+            return i2cl.i2cRead(p.addr, p.length, Buffer.alloc(p.length))
+                .then(val => {
+                    console.log(`Received:`);
+                    console.dir(Array(...val.buffer));
                 })
                 .catch(e => {
                     console.log(`Error reading.`);
@@ -57,6 +77,21 @@ const cli = new CLI()
         async action(p) {
             i2clOpen(i2cl);
             await i2cl.i2cWrite(p.addr, 1, Buffer.from([p.val]))
+                .catch(e => {
+                    console.log(`Error writing.`);
+                    console.log(e);
+                })
+        }
+    })
+    .addCommand("write-buffer", {
+        description: "Write a buffer.",
+        parameters: [
+            { label: "addr", type: "number", description: "Device address." },
+            { label: "vals", type: "number", description: "Values to write (0-255)", rest: true },
+        ],
+        async action(p) {
+            i2clOpen(i2cl);
+            await i2cl.i2cWrite(p.addr, 1, Buffer.from(p.vals))
                 .catch(e => {
                     console.log(`Error writing.`);
                     console.log(e);
